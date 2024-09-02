@@ -14,6 +14,7 @@ from datetime import datetime
 chrome_options = Options()
 chrome_options.add_argument("--headless")  # Execute o Chrome em modo headless (sem abrir a janela)
 chrome_options.binary_location = "C:\\Users\\fabda\\Documents\\chrome-win64\\chrome.exe"
+#chrome_options.binary_location = "C:\\Users\\labsfiap\\Downloads\\chrome-win64\\chrome.exe"
 chrome_service = Service('chromedriver.exe')  # Coloque o caminho correto do chromedriver aqui
 
 def get_driver():
@@ -71,22 +72,31 @@ postos = {
     }
 }
 
-def get_station_data(station_url, retries=3):
+
+def get_station_data(station_url, retries=3, page_timeout=30):
     global driver
     for attempt in range(retries):
         try:
             time.sleep(8)
+            # Navegar para a URL com um timeout para evitar carregamento infinito
+            driver.set_page_load_timeout(page_timeout)
             driver.get(station_url)
-            start_time = time.time()
 
-            # Aguardar até que a tabela esteja presente ou timeout de 30 segundos
-            WebDriverWait(driver, 30).until(
+            # Verificar se a página foi carregada com um tempo limite específico
+            WebDriverWait(driver, page_timeout).until(
+                lambda d: d.execute_script('return document.readyState') == 'complete'
+            )
+
+            # Esperar até que a tabela esteja presente ou timeout de 30 segundos
+            WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.TAG_NAME, 'table'))
             )
+
             soup = BeautifulSoup(driver.page_source, 'html.parser')
             table = soup.find('table')
 
-            if table:
+            # Verificar se a tabela foi encontrada e tem linhas
+            if table and len(table.find_all('tr')) > 1:
                 rows = table.find_all('tr')
 
                 # Extraindo os dados da tabela
@@ -120,25 +130,41 @@ def get_station_data(station_url, retries=3):
 
                 print(f"Tabela encontrada em {station_url}. Dados extraídos.")
                 return data
+
             else:
-                print(f"Nenhuma tabela encontrada em {station_url}.")
+                print(f"Nenhuma tabela encontrada ou tabela vazia em {station_url}.")
                 return None
 
         except Exception as e:
             print(f"Erro ao carregar os dados: {e}")
-            if time.time() - start_time > 30:
-                print(f"Reiniciando o driver devido ao timeout...")
+            if attempt == retries - 1:
+                # Se for a última tentativa, registrar dados nulos com data e hora
+                data = {
+                    "Chuva(mm)": "",
+                    "Temp(oC)": "",
+                    "Umid.Rel.(%)": "",
+                    "Vel.VT(m/s)": "",
+                    "Dir.VT(o)": "",
+                    "Pressão(mb)": "",
+                    "Data": datetime.now().strftime('%Y-%m-%d'),
+                    "Hora": datetime.now().strftime('%H:00')
+                }
+                return data
+            else:
+                # Reinicie o driver se não for a última tentativa
                 driver.quit()
                 driver = get_driver()
-            else:
                 time.sleep(10)  # Espera antes de tentar novamente
+
     return None
+
 
 def save_to_csv(zone, station_name, data):
     if data:
         # Definindo o caminho do arquivo CSV
         file_path = f'clima_SP_zonas/{zone}/{station_name}.csv'
 
+        data["Posto"] = station_name
 
         # Verificando se o diretório existe
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
@@ -147,7 +173,7 @@ def save_to_csv(zone, station_name, data):
         df = pd.DataFrame([data])
 
         # Salvando no CSV, acrescentando se o arquivo já existir
-        df.to_csv(file_path, mode='a', index=False, header=not os.path.exists(file_path))
+        df.to_csv(file_path, mode='a', index=False, header=not os.path.exists(file_path),sep=';')
 
 # Loop para executar o scraping a cada 1 hora
 while True:
