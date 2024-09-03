@@ -12,20 +12,17 @@ from datetime import datetime
 
 # Configurações do Selenium
 chrome_options = Options()
-chrome_options.add_argument("--headless")  # Execute o Chrome em modo headless (sem abrir a janela)
+chrome_options.add_argument("--headless")
 chrome_options.binary_location = "C:\\Users\\fabda\\Documents\\chrome-win64\\chrome.exe"
-#chrome_options.binary_location = "C:\\Users\\labsfiap\\Downloads\\chrome-win64\\chrome.exe"
-chrome_service = Service('chromedriver.exe')  # Coloque o caminho correto do chromedriver aqui
+chrome_service = Service('chromedriver.exe')
 
 def get_driver():
     return webdriver.Chrome(service=chrome_service, options=chrome_options)
 
 driver = get_driver()
 
-# URL base fixo com um placeholder para o número do posto
 BASE_URL = "https://www.cgesp.org/v3/estacao.jsp?POSTO={}"
 
-# Dicionário para você adicionar os números dos postos correspondentes a cada zona
 postos = {
     "Zona Norte": {
         "504": "Perus",
@@ -45,7 +42,8 @@ postos = {
         "846": "Capela do Socorro - Subprefeitura",
         "1000857": "Capela do Socorro",
         "495": "Vila Mariana",
-        "634": "Jabaquara"
+        "634": "Jabaquara",
+        "400": "Riacho Grande"
     },
     "Zona Leste": {
         "1000887": "Penha",
@@ -53,24 +51,22 @@ postos = {
         "1000882": "Itaim Paulista",
         "1000859": "Vila Formosa",
         "1000864": "Itaquera",
-        "524": "Vila Prudente"
+        "524": "Vila Prudente",
+        "1000876": "Mauá - Paço Municipal"
     },
     "Zona Oeste": {
         "1000842": "Butantã",
         "1000848": "Lapa",
-        "1000635": "Pinheiros"
+        "1000635": "Pinheiros",
+        "1000880": "Santana do Parnaíba"
     },
     "Centro": {
         "503": "Sé - CGE",
         "1000840": "Ipiranga",
         "1000860": "Móoca"
-    },
-    "Grande SP": {
-        "400": "Riacho Grande",
-        "1000876": "Mauá - Paço Municipal",
-        "1000880": "Santana do Parnaíba"
     }
 }
+
 
 
 def get_station_data(station_url, retries=3, page_timeout=30):
@@ -78,16 +74,16 @@ def get_station_data(station_url, retries=3, page_timeout=30):
     for attempt in range(retries):
         try:
             time.sleep(8)
-            # Navegar para a URL com um timeout para evitar carregamento infinito
+
             driver.set_page_load_timeout(page_timeout)
             driver.get(station_url)
 
-            # Verificar se a página foi carregada com um tempo limite específico
+
             WebDriverWait(driver, page_timeout).until(
                 lambda d: d.execute_script('return document.readyState') == 'complete'
             )
 
-            # Esperar até que a tabela esteja presente ou timeout de 30 segundos
+
             WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.TAG_NAME, 'table'))
             )
@@ -138,7 +134,7 @@ def get_station_data(station_url, retries=3, page_timeout=30):
         except Exception as e:
             print(f"Erro ao carregar os dados: {e}")
             if attempt == retries - 1:
-                # Se for a última tentativa, registrar dados nulos com data e hora
+
                 data = {
                     "Chuva(mm)": "",
                     "Temp(oC)": "",
@@ -151,28 +147,23 @@ def get_station_data(station_url, retries=3, page_timeout=30):
                 }
                 return data
             else:
-                # Reinicie o driver se não for a última tentativa
                 driver.quit()
                 driver = get_driver()
                 time.sleep(10)  # Espera antes de tentar novamente
 
     return None
 
-
+#Salvando o CSV
 def save_to_csv(zone, station_name, data):
     if data:
-        # Definindo o caminho do arquivo CSV
         file_path = f'clima_SP_zonas/{zone}/{station_name}.csv'
 
         data["Posto"] = station_name
 
-        # Verificando se o diretório existe
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-        # Convertendo os dados para um DataFrame
         df = pd.DataFrame([data])
 
-        # Salvando no CSV, acrescentando se o arquivo já existir
         df.to_csv(file_path, mode='a', index=False, header=not os.path.exists(file_path),sep=';')
 
 # Loop para executar o scraping a cada 1 hora
@@ -182,10 +173,8 @@ while True:
             station_url = BASE_URL.format(station_code)
             station_name_with_code = f"posto {station_code} - {station_name}"
 
-            # Coletando os dados da estação
             data = get_station_data(station_url)
 
-            # Salvando os dados no CSV correspondente à zona
             save_to_csv(zone, station_name_with_code, data)
 
     # Aguardar 1 hora (3600 segundos)
