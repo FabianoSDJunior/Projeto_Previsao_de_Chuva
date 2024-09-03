@@ -1,14 +1,10 @@
-from selenium import webdriver
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from bs4 import BeautifulSoup
-import pandas as pd
-import time
-import os
-from datetime import datetime
+from selenium import webdriver
+
 
 # Configurações do Selenium
 chrome_options = Options()
@@ -68,6 +64,10 @@ postos = {
 }
 
 
+
+from bs4 import BeautifulSoup
+from datetime import datetime
+import time
 
 def get_station_data(station_url, retries=3, page_timeout=30):
     global driver
@@ -153,6 +153,11 @@ def get_station_data(station_url, retries=3, page_timeout=30):
 
     return None
 
+
+
+import pandas as pd
+import os
+
 def save_to_csv(zone, station_name, data):
     if data:
         file_path = f'clima_SP_zonas/{zone}/{station_name}.csv'
@@ -165,14 +170,25 @@ def save_to_csv(zone, station_name, data):
 
         df.to_csv(file_path, mode='a', index=False, header=not os.path.exists(file_path),sep=';')
 
-while True:
+
+
+import schedule
+
+def run_scraping():
     for zone, stations in postos.items():
         for station_code, station_name in stations.items():
             station_url = BASE_URL.format(station_code)
             station_name_with_code = f"posto {station_code} - {station_name}"
 
             data = get_station_data(station_url)
-
             save_to_csv(zone, station_name_with_code, data)
 
-    time.sleep(3600)
+# Agende o script para rodar a cada hora cheia
+for hour in range(24):
+    schedule_time = f"{hour:02d}:00"
+    schedule.every().day.at(schedule_time).do(run_scraping)
+
+# Loop infinito para manter o agendamento ativo
+while True:
+    schedule.run_pending()
+    time.sleep(1)
