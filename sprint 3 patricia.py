@@ -1,21 +1,6 @@
-import pandas as pd
-pd.set_option('display.max_columns', None)
-def ler_arquivar(teste):
-    dados = []
+import csv
 
-    for CSV in teste:
-
-            df = pd.read_csv(f'C:\\projetos\\pythonProject\\clima_SP_zonas\\{CSV}', sep=';')
-            dados.append(df)
-
-
-    return dados
-
-def ler(dados):
-    for df in dados:
-        print(df)
-
-arquivos = [
+arquivo = [
     "posto 504 - Perus.csv",
     "posto 515 - Pirituba.csv",
     "posto 509 - Freguesia do Ó.csv",
@@ -49,5 +34,10 @@ arquivos = [
     "posto 1000880 - Santana do Parnaíba.csv"
 ]
 
-sla = ler_arquivar(arquivos)
-ler(sla)
+dados = []
+for CSV in arquivo:
+     with open(f'C:\\Users\\labsfiap\\PycharmProjects\\pythonProject\\clima_SP_zonas\\{CSV}','r',encoding='UTF-8') as arq:
+        teste1 = csv.reader(arq)
+        for linha in teste1:
+            print(linha)
+            dados.append(linha)
