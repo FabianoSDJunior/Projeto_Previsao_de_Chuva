@@ -149,11 +149,10 @@ def get_station_data(station_url, retries=3, page_timeout=30):
             else:
                 driver.quit()
                 driver = get_driver()
-                time.sleep(10)  # Espera antes de tentar novamente
+                time.sleep(10)
 
     return None
 
-#Salvando o CSV
 def save_to_csv(zone, station_name, data):
     if data:
         file_path = f'clima_SP_zonas/{zone}/{station_name}.csv'
@@ -166,7 +165,6 @@ def save_to_csv(zone, station_name, data):
 
         df.to_csv(file_path, mode='a', index=False, header=not os.path.exists(file_path),sep=';')
 
-# Loop para executar o scraping a cada 1 hora
 while True:
     for zone, stations in postos.items():
         for station_code, station_name in stations.items():
@@ -177,5 +175,4 @@ while True:
 
             save_to_csv(zone, station_name_with_code, data)
 
-    # Aguardar 1 hora (3600 segundos)
     time.sleep(3600)
