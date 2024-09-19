@@ -1,0 +1,43 @@
+{
+    "Zona Norte": {
+        "504": "Perus",
+        "515": "Pirituba",
+        "509": "Freguesia do Ó",
+        "510": "Santana - Tucuruvi",
+        "1000944": "Tremembé",
+        "540": "Vila Maria - Guilherme"
+    },
+    "Zona Sul": {
+        "1000852": "Santo Amaro",
+        "1000850": "M Boi Mirim",
+        "592": "Cidade Ademar",
+        "507": "Barragem Parelheiros",
+        "1000300": "Marsilac",
+        "1000854": "Campo Limpo",
+        "846": "Capela do Socorro - Subprefeitura",
+        "1000857": "Capela do Socorro",
+        "495": "Vila Mariana",
+        "634": "Jabaquara",
+        "400": "Riacho Grande"
+    },
+    "Zona Leste": {
+        "1000887": "Penha",
+        "1000862": "São Miguel Paulista",
+        "1000882": "Itaim Paulista",
+        "1000859": "Vila Formosa",
+        "1000864": "Itaquera",
+        "524": "Vila Prudente",
+        "1000876": "Mauá - Paço Municipal"
+    },
+    "Zona Oeste": {
+        "1000842": "Butantã",
+        "1000848": "Lapa",
+        "1000635": "Pinheiros",
+        "1000880": "Santana do Parnaíba"
+    },
+    "Centro": {
+        "503": "Sé - CGE",
+        "1000840": "Ipiranga",
+        "1000860": "Móoca"
+    }
+}
