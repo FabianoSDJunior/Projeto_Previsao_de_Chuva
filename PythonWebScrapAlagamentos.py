@@ -183,7 +183,6 @@ post_codes = {
         "510": "Santana",
         "1000944": "Tremembé",
         "540": "Vila Maria/ Vila Guilherme",
-        "2222222": 'Ermelino Matarazzo'
     },
     "Zona Sul": {
         "1000852": "Santo Amaro",
@@ -205,7 +204,8 @@ post_codes = {
         "1000859": "Vila Formosa",
         "1000864": "Itaquera",
         "524": "Vila Prudente",
-        "1000876": "Mauá - Paço Municipal"
+        "1000876": "Mauá - Paço Municipal",
+        "2222222": 'Ermelino Matarazzo'
     },
     "Zona Oeste": {
         "1000842": "Butantã",
