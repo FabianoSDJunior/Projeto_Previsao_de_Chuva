@@ -205,7 +205,10 @@ post_codes = {
         "1000864": "Itaquera",
         "524": "Vila Prudente",
         "1000876": "Mauá - Paço Municipal",
-        "2222222": 'Ermelino Matarazzo'
+        "2222222": 'Ermelino Matarazzo',
+        "3333333": 'São Mateus',
+        "4444444": 'Sapopemba',
+        '5555555': 'Cidade Tiradentes'
     },
     "Zona Oeste": {
         "1000842": "Butantã",
