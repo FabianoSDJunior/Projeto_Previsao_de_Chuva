@@ -248,7 +248,7 @@ alagamentos = get_data_from_oracle(alagamentos_query)
 causas_interrupcao = get_data_from_oracle(causas_interrupcao_query)
 precipitacao = get_data_from_oracle(precipitacao_query)
 Resumo_estatistico = get_data_from_oracle(Resumo_estatistico_query )
-st.sidebar.title("Menu")
+st.sidebar.title("Seleção de Menu")
 sidebar_option = st.sidebar.radio("Selecione uma aba:", ("Mapas", "Gráficos"))
 if sidebar_option == "Gráficos":
     grafico_selecionado = st.selectbox("Escolha o gráfico a ser exibido:",
@@ -297,7 +297,7 @@ if sidebar_option == "Gráficos":
                     [f'{posto}: {count} ({percent:.1f}%)' for posto, count, percent in legend_data],
                     title="Principais postos (Falta de Luz)",
                     loc="center left",
-                    bbox_to_anchor=(0.13, -0.29),
+                    bbox_to_anchor=(0.125, -0.29),
                     ncol=2
                 )
                 ax.axis('equal')
@@ -313,7 +313,7 @@ if sidebar_option == "Gráficos":
         st.markdown("<h2 style='text-align: center;'>Ocorrências de Alagamentos por Rua </h2>", unsafe_allow_html=True)
         st.markdown("<h2 style='text-align: center;'>(2020-2024)</h2>",
                     unsafe_allow_html=True)
-        alagamentos_filtrados = alagamentos[alagamentos['NUM_ALAGAMENTOS'] > 10]
+        alagamentos_filtrados = alagamentos[alagamentos['NUM_ALAGAMENTOS'] > 15]
 
         if not alagamentos_filtrados.empty:
             fig, ax = plt.subplots(figsize=(20, 10), facecolor='w')  # Fundo branco externo
@@ -474,8 +474,8 @@ if sidebar_option == "Mapas":
                 'Posto': nome_posto,
                 'Código': cod_posto,
                 'Temperatura': f"{temp} °C",
-                'Chuva': f"{chuva} mm",
-                'Velocidade Vento': f"{vel_vt} m/s",
+                'Chuva': f"{chuva} mm/s",
+                'Velocidade Vento': f"{vel_vt} Km/h",
                 'Direção Vento': f"{dir_vt} °"
             })
 
@@ -483,8 +483,8 @@ if sidebar_option == "Mapas":
             descricao = f"""
                 <b>Posto:</b> {nome_posto} ({cod_posto})<br>
                 <b>Temperatura:</b> {temp} °C<br>
-                <b>Chuva:</b> {chuva} mm<br>
-                <b>Velocidade do Vento:</b> {vel_vt} m/s<br>
+                <b>Chuva:</b> {chuva} mm/s<br>
+                <b>Velocidade do Vento:</b> {vel_vt} Km/h<br>
                 <b>Direção do Vento:</b> {dir_vt} °<br>
                 <b>Última atualização:</b> {data_hora}
             """
@@ -586,8 +586,8 @@ if sidebar_option == "Mapas":
             tabela_energia.append({
                 'Posto': nome_posto,
                 'Código': cod_posto,
-                'Média Chuva': f"{media_chuva} mm",
-                'Chuva Atual': f"{chuva_atual} mm",
+                'Média Chuva': f"{media_chuva} mm/s",
+                'Chuva Atual': f"{chuva_atual} mm/s",
                 'Prob. Queda de Energia': f"{probabilidade} %"
             })
 
@@ -595,14 +595,14 @@ if sidebar_option == "Mapas":
             descricao = f"""
                 <b>Posto:</b> {nome_posto} ({cod_posto})<br>
                 <b>Média de Chuva:</b> {media_chuva} mm<br>
-                <b>Chuva Atual:</b> {chuva_atual} mm<br>
+                <b>Chuva Atual:</b> {chuva_atual} mm/s<br>
                 <b>Probabilidade de Queda de Energia:</b> {probabilidade} %
                 <b>Última atualização:</b> {data_hora}
             """
             folium.Marker(
                 location=[latitude, longitude],
                 popup=folium.Popup(descricao, max_width=300),
-                icon=folium.CustomIcon('https://i.imgur.com/5V6SB0V.png', icon_size=(65, 45))
+                icon=folium.CustomIcon('https://i.imgur.com/8gNMUQP.png', icon_size=(60, 45))
             ).add_to(mapa_energia)
 
         # Exibir mapa
