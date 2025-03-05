@@ -1,3 +1,5 @@
+--EXEMPLO DE CONEXAO ENTRE PYTHON E ORACLEDB
+
 import pandas as pd
 import oracledb
 from sqlalchemy import create_engine
@@ -9,7 +11,7 @@ os.environ["TNS_ADMIN"] = "C:\\Wallet_ORACLEDB"
 oracledb.init_oracle_client(lib_dir="C:\\oracle\\instantclient_23_5")
 
 # Crie a engine SQLAlchemy
-engine = create_engine('oracle+oracledb://admin:Abacate1#Espacial1#@ORACLEDB_high')
+engine = create_engine('oracle+oracledb://--USER--:--PASSWORD--@ORACLEDB_high')
 
 # Conecte-se ao banco de dados e leia a tabela em um DataFrame
 with engine.connect() as connection:
