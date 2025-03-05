@@ -1,4 +1,4 @@
-# 🌧️ Projeto Final - Challenge Minsait (FIAP)
+# 🌧️ Projeto: Previsão de Chuva Challenge - Fiap
 
 ## 📹 Apresentação em Vídeo
 👉 [Assista no YouTube](https://youtu.be/g3v8oBnwTHE)
