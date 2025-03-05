@@ -16,13 +16,13 @@ from sqlalchemy import create_engine, text
 # Configurações do Selenium
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-chrome_options.binary_location = "C:\\Users\\fabda\\Documents\\chrome-win64\\chrome.exe"
+chrome_options.binary_location = "local do disco em que o chrome se encontra" --utilizar somente se quiser usar um chrome de versao especifica
 chrome_service = Service('chromedriver.exe')
 
 # Configuração do Oracle Client e SQLAlchemy
 os.environ["TNS_ADMIN"] = "C:\\Wallet_ORACLEDB"
 oracledb.init_oracle_client(lib_dir="C:\\oracle\\instantclient_23_5")
-engine = create_engine('oracle+oracledb://admin:Abacate1#Espacial1#@ORACLEDB_high')
+engine = create_engine('oracle+oracledb://--user--:--Password--#@ORACLEDB_high')
 
 # URL base para scraping
 BASE_URL = "https://www.cgesp.org/v3/estacao.jsp?POSTO={}"
