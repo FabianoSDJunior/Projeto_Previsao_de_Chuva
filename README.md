@@ -35,7 +35,7 @@ Projeto desenvolvido no Challenge da Minsait, integrando dados climáticos, de a
 ---
 
 ### 💼 Contato
-[LinkedIn]([https://www.linkedin.com/in/fabsdjr/]) | [E-mail](mailto:fabdamiao@outlook.com)
+[LinkedIn](https://www.linkedin.com/in/fabsdjr/) | [E-mail](mailto:fabdamiao@outlook.com)
 
 ---
 
