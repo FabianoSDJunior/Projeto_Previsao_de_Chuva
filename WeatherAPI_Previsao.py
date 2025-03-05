@@ -5,8 +5,8 @@ import os
 import time
 
 # Defina as suas credenciais da API
-USERNAMES = ['fiap_souza_fabiano', 'faculdadedetecnologiadapaulista_junior_fabian']
-PASSWORDS = ['4d4J2S4pRn', 'A42f4gzUFE']
+USERNAMES = ['---', '---']
+PASSWORDS = ['---', '---']
 
 # Coordenadas dos postos
 postos = {
