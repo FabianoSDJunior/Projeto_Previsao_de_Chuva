@@ -14,7 +14,7 @@ import math
 # Configurações do Selenium
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-chrome_options.binary_location = "C:\\Users\\fabda\\Documents\\chrome-win64\\chrome.exe"
+chrome_options.binary_location = "local do disco em que o chrome se encontra" --utilizar somente se quiser usar um chrome de versao especifica
 chrome_service = Service('chromedriver.exe')
 
 
